@@ -1,7 +1,13 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import dao.UserDaoImpl
+import service.auth.AuthenticationServiceImpl
+import service.menu.ConsoleMenuServiceImpl
+import service.registration.RegistrationServiceImpl
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main() {
+    val userDao = UserDaoImpl()
+    val registrationService = RegistrationServiceImpl(userDao)
+    val authenticationService = AuthenticationServiceImpl(userDao)
+    val consoleMenuService = ConsoleMenuServiceImpl(registrationService, authenticationService, userDao)
+
+    consoleMenuService.run()
 }
