@@ -1,15 +1,14 @@
 package service.menu
 
 import dao.UserDao
+import dao.UserDaoImpl
 import entity.ConsoleMenu
 import entity.Role
-import service.auth.AuthenticationService
-import service.registration.RegistrationService
+import service.auth.AuthServiceImpl
 import java.util.*
 
 class ConsoleMenuServiceImpl(
-    private val registrationService: RegistrationService,
-    private val authenticationService: AuthenticationService,
+    private val authServiceImpl: AuthServiceImpl,
     private val userDao: UserDao
 ) : ConsoleMenuService {
     private val scanner = Scanner(System.`in`)
@@ -45,7 +44,7 @@ class ConsoleMenuServiceImpl(
         val password = scanner.next()
 
 
-        val result = registrationService.register(username, password, role)
+        val result = authServiceImpl.register(username, password, role)
         if (result) {
             println("Registration successful!")
         } else {
@@ -59,7 +58,7 @@ class ConsoleMenuServiceImpl(
         println("Enter password:")
         val password = scanner.next()
 
-        val user = authenticationService.authenticate(username, password)
+        val user = authServiceImpl.login(username, password)
         if (user != null) {
             println("Authentication successful!")
         } else {

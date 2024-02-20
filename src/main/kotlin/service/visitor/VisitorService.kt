@@ -6,4 +6,5 @@ interface VisitorService {
     fun viewOrder()
     fun cancelOrder()
     fun payOrder()
+    fun viewOrderStatus()
 }

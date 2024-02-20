@@ -1,11 +1,23 @@
 package service.auth
-import dao.UserDao
-import java.security.MessageDigest
-import entity.User
-import entity.Role
 
-class AuthenticationServiceImpl(private val userDao: UserDao) : AuthenticationService {
-    override fun authenticate(name: String, password: String): User? {
+import dao.UserDao
+import entity.Role
+import entity.User
+import java.security.MessageDigest
+import kotlin.random.Random
+
+class AuthServiceImpl(private val userDao: UserDao) : AuthService {
+    override fun register(username: String, password: String, role: Role) : Boolean {
+        val userId = generateUserId()
+        val salt = ByteArray(16)
+        Random.nextBytes(salt)
+        val passwordHash = hashPassword(password, salt)
+        userDao.saveUser(User(userId, username, passwordHash, salt, role))
+        println("The user has been successfully registered.")
+        return true
+    }
+
+    override fun login(name: String, password: String): User? {
         val user = userDao.getUserByName(name)
         /* if (user != null && user.password == hashPassword(password, user.salt)){
             return user
@@ -20,6 +32,9 @@ class AuthenticationServiceImpl(private val userDao: UserDao) : AuthenticationSe
         return null
     }
 
+    override fun generateUserId(): String {
+        return "U-${Random.nextInt(1000, 9999)}"
+    }
     override fun hashPassword(password: String, salt: ByteArray): String {
         val md = MessageDigest.getInstance("SHA-256")
         md.update(salt)

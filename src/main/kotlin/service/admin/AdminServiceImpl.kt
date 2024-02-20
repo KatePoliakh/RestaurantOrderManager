@@ -1,17 +1,18 @@
 package service.admin
+import dao.MenuDao
 import entity.MenuItem
 
 
-class AdminServiceImpl : AdminService {
+class AdminServiceImpl(private val menuDao: MenuDao) : AdminService {
     override fun addItem(menuItem: MenuItem) {
-        //  TODO: Implement this method
+        menuDao.addItem(menuItem)
     }
 
     override fun removeItem(menuItem: MenuItem) {
-        // TODO: Implement this method
+        menuDao.removeItem(menuItem)
     }
 
     override fun updateItem(menuItem: MenuItem) {
-        // TODO: Implement this method
+        menuDao.updateItem(menuItem)
     }
 }

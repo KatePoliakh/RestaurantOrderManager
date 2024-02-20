@@ -1,13 +1,15 @@
+import dao.MenuDaoImpl
 import dao.UserDaoImpl
-import service.auth.AuthenticationServiceImpl
+import service.auth.AuthServiceImpl
 import service.menu.ConsoleMenuServiceImpl
-import service.registration.RegistrationServiceImpl
+import service.visitor.VisitorServiceImpl
 
 fun main() {
     val userDao = UserDaoImpl()
-    val registrationService = RegistrationServiceImpl(userDao)
-    val authenticationService = AuthenticationServiceImpl(userDao)
-    val consoleMenuService = ConsoleMenuServiceImpl(registrationService, authenticationService, userDao)
+    val authService = AuthServiceImpl(userDao)
+    val consoleMenuService = ConsoleMenuServiceImpl(authService, userDao)
+    //val menuDao = MenuDaoImpl()
+    //val visitorService = VisitorServiceImpl(menuDao)
 
     consoleMenuService.run()
 }
