@@ -1,16 +1,15 @@
 package service.menu
 
 import dao.UserDao
-import dao.UserDaoImpl
 import entity.ConsoleMenu
 import entity.Role
 import service.auth.AuthServiceImpl
 import java.util.*
 
-class ConsoleMenuServiceImpl(
+class MainMenuImpl(
     private val authServiceImpl: AuthServiceImpl,
     private val userDao: UserDao
-) : ConsoleMenuService {
+) : MainMenu {
     private val scanner = Scanner(System.`in`)
 
     override fun run() {

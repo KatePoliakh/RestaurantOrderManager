@@ -1,6 +1,6 @@
 package service.menu
 
-interface ConsoleMenuService {
+interface MainMenu {
     fun run()
     fun handleRegistration()
     fun handleAuthentication()
