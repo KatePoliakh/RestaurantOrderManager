@@ -1,6 +1,6 @@
 import dao.UserDaoImpl
 import service.auth.AuthServiceImpl
-import service.menu.MainMenuImpl
+import presentation.menu.MainMenuImpl
 
 fun main() {
     val userDao = UserDaoImpl()

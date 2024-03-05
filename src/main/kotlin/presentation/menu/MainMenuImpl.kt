@@ -1,4 +1,4 @@
-package service.menu
+package presentation.menu
 
 import dao.UserDao
 import entity.ConsoleMenu

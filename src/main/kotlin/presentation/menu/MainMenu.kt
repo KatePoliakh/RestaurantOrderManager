@@ -1,4 +1,4 @@
-package service.menu
+package presentation.menu
 
 interface MainMenu {
     fun run()
