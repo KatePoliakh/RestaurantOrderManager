@@ -5,58 +5,45 @@ package data.repository
 //import kotlinx.serialization.json.Json
 import data.dao.UserDao
 import domain.entity.User
-import java.io.File
-import java.io.FileNotFoundException
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-class UserJsonRepository(private val userJsonRepositoryPath: String) : UserDao {
-    //private val json = Json { prettyPrint = true }
-     fun serialize(data: List<User>): String {
-        //    return json.encodeToString(data)
-        return ""
-    }
-
-
-
-    fun deserialize(data: String): List<User> {
-        //   return json.decodeFromString(data)
-        return emptyList()
-    }
+class UserJsonRepository(private val userJsonRepositoryPath: String) : JsonRepository<User>(), UserDao {
 
     override fun saveUser(user: User) {
-        TODO("Not yet implemented")
-    }
+        val textFromFile = readFileOrCreateEmpty(userJsonRepositoryPath)
+        val users: List<User> = if (textFromFile.isBlank())
+            listOf() else Json.decodeFromString(textFromFile)
+        val updatedUsers = users.toMutableList()
+        updatedUsers.add(user)
+        val serializedUpdatedStorage = Json.encodeToString(updatedUsers.toList())
+        writeTextToFile(userJsonRepositoryPath, serializedUpdatedStorage)
 
-    override fun getUserById(userId: String): User? {
-        TODO("Not yet implemented")
     }
 
     override fun getUserByName(username: String): User? {
-        TODO("Not yet implemented")
+        val textFromFile = readFileOrCreateEmpty(userJsonRepositoryPath)
+        val users: List<User> = if (textFromFile.isBlank())
+            listOf() else Json.decodeFromString(textFromFile)
+        return users.find { it.name == username }
     }
 
     override fun getAllUsers(): List<User> {
-        val storageFileText = readFileOrCreateEmpty(userJsonRepositoryPath)
-        val accounts: List<User> = if (storageFileText.isBlank()) {
-            listOf()
-        } else {
-            // Json.decodeFromString<List<User>>(storageFileText)
-            // Replace the above line with your deserialization logic
-            deserialize(storageFileText)
-        }
-        return accounts
+        val textFromFile = readFileOrCreateEmpty(userJsonRepositoryPath)
+
+        return if (textFromFile.isBlank())
+            listOf() else Json.decodeFromString<List<User>>(textFromFile)
     }
 
-    override fun deleteUser(user: User) {
-        TODO("Not yet implemented")
-    }
-
-    private fun readFileOrCreateEmpty(filePath: String): String {
-        val file = File(filePath)
-        return try {
-            file.readText()
-        } catch (exception: FileNotFoundException) {
-            file.createNewFile()
-            ""
+   /* override fun updateUser(username: String, password: String, role: String): Boolean {
+        val users = loadFromFile(userJsonRepositoryPath).toMutableList()
+        val user = users.find { it.name == username }
+        if (user != null) {
+            user.password = password
+            user.role = role
+            saveToFile(users, userJsonRepositoryPath)
+            return true
         }
-    }
+        return false
+    }*/
 }

@@ -1,4 +1,4 @@
-package domain.service.exception
+package presentation.exception
 
 interface BaseException {
     val message: String

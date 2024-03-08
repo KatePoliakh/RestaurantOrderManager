@@ -4,5 +4,7 @@ interface MainMenu {
     fun run()
     fun handleRegistration()
     fun handleAuthentication()
-    fun handleGetAllUsers() // убрать позже
+    fun handleViewMenu()
+    fun handleVisitorAuth()
+    fun handleAdminAuth()
 }

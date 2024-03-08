@@ -3,6 +3,8 @@ package domain.service.auth
 import data.dao.UserDao
 import domain.entity.Role
 import domain.entity.User
+import presentation.model.OutputModel
+import presentation.model.OutputStatus
 import java.security.MessageDigest
 import kotlin.random.Random
 
@@ -13,7 +15,7 @@ class AuthServiceImpl(private val userDao: UserDao) : AuthService {
         Random.nextBytes(salt)
         val passwordHash = hashPassword(password, salt)
         userDao.saveUser(User(userId, username, passwordHash, salt, role))
-        println("The user has been successfully registered.")
+        OutputModel("The user has been successfully registered.", OutputStatus.Success)
         return true
     }
 

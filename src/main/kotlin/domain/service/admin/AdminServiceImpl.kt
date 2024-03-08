@@ -5,7 +5,10 @@ import domain.entity.MenuItem
 
 class AdminServiceImpl(private val menuDao: MenuDao) : AdminService {
     override fun viewMenu() {
-        menuDao.viewMenu()
+        val menuItems = menuDao.getAllItems()
+        for (menuItem in menuItems) {
+            println(menuItem)
+        }
     }
     override fun addItem(menuItem: MenuItem) {
         menuDao.addItem(menuItem)

@@ -1,7 +1,7 @@
-package presentation.menu
-import data.dao.MenuDaoImpl
+package presentation.menu.admin
+import data.dao.MenuDao
 import domain.entity.MenuItem
-import domain.service.admin.AdminServiceImpl
+import domain.service.admin.AdminService
 import java.util.*
 
 interface AdminMenu {
@@ -12,8 +12,8 @@ interface AdminMenu {
     fun handleUpdateDish()
 }
 
-class AdminMenuImpl(private val adminService: AdminServiceImpl,
-                    private val menu: MenuDaoImpl
+class AdminMenuImpl(private val adminService: AdminService,
+                    private val menu: MenuDao
 ) : AdminMenu {
 
     private val scanner = Scanner(System.`in`)

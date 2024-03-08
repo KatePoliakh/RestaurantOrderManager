@@ -4,7 +4,6 @@ import di.DI
 
 class ConsoleMenuController {
     val mainMenu = DI.consoleMenu
-
     fun run() {
         println("Welcome to the restaurant!")
         //println("Please select an option:")

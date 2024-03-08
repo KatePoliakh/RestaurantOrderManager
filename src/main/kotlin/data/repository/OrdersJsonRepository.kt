@@ -1,44 +1,39 @@
 package data.repository
 
-import data.dao.OrdersDao
-
-package data.repository
-
-//import domain.entity.Order
-
 //import kotlinx.serialization.json.Json
-import data.dao.UserDao
-import domain.entity.User
-import java.io.File
-import java.io.FileNotFoundException
+//import kotlinx.serialization.SerializationException
+import data.dao.OrdersDao
+import domain.entity.Order
 
-class OrdersJsonRepository(private val ordersJsonRepositoryPath: String) : OrdersDao {
-    //private val json = Json { prettyPrint = true }
-    fun serialize(data: List<User>): String {
-        //    return json.encodeToString(data)
-        return ""
+class OrdersJsonRepository(private val ordersJsonRepositoryPath: String) : JsonRepository<Order>(), OrdersDao {
+
+
+    override fun addOrder(order: Order) {
+        val orders = loadFromFile(ordersJsonRepositoryPath).toMutableList()
+        orders.add(order)
+        saveToFile(orders, ordersJsonRepositoryPath)
+        //writeFile(ordersJsonRepositoryPath, serialize(orders))
     }
-
-
-
-    fun deserialize(data: String): List<User> {
-        //   return json.decodeFromString(data)
-        return emptyList()
+    override fun removeOrder(order: Order){
+        val orders = loadFromFile(ordersJsonRepositoryPath).toMutableList()
+        orders.remove(order)
+        saveToFile(orders, ordersJsonRepositoryPath)
+        //writeFile(ordersJsonRepositoryPath, serialize(orders))
     }
-    override fun viewOrders() {
-        TODO("Not yet implemented")
+    override fun updateOrder(order: Order) {
+        val orders = loadFromFile(ordersJsonRepositoryPath).toMutableList()
+        val index = orders.indexOf(order)
+        if (index != -1) {
+            orders[index] = order
+        }
+        saveToFile(orders, ordersJsonRepositoryPath)
     }
-
-    override fun addOrder() {
-        TODO("Not yet implemented")
+    override fun getAllOrders(): List<Order> {
+        return loadFromFile(ordersJsonRepositoryPath)
     }
-
-    override fun removeOrder() {
-        TODO("Not yet implemented")
-    }
-
-    override fun updateOrder() {
-        TODO("Not yet implemented")
+    override fun getOrderById(orderId: Int): Order? {
+        val orders = loadFromFile(ordersJsonRepositoryPath)
+        return orders.find { it.orderId == orderId }
     }
 
 }

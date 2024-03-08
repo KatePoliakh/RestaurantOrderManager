@@ -1,4 +1,4 @@
-package domain.service.exception
+package presentation.exception
 
 class RegistrationException (override val message: String) : BaseException {
 }
