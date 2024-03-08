@@ -1,13 +1,12 @@
 package presentation.menu
 
-import dao.UserDao
-import entity.ConsoleMenu
-import entity.Role
-import service.auth.AuthServiceImpl
+import data.dao.UserDao
+import domain.entity.Role
+import domain.service.auth.AuthService
 import java.util.*
 
 class MainMenuImpl(
-    private val authServiceImpl: AuthServiceImpl,
+    private val authServiceImpl: AuthService,
     private val userDao: UserDao
 ) : MainMenu {
     private val scanner = Scanner(System.`in`)
@@ -23,9 +22,9 @@ class MainMenuImpl(
             when (choice) {
                 1 -> handleRegistration()
                 2 -> handleAuthentication()
-                3 -> handleGetAllUsers() // убрать позже
+               // 3 -> handleGetAllUsers() // убрать позже
             }
-        } while (choice != 4)
+        } while (choice != 3)
     }
     override fun handleGetAllUsers() { // убрать позже
         val users = userDao.getAllUsers()
