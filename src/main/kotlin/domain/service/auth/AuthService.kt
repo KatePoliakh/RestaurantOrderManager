@@ -8,5 +8,4 @@ interface AuthService {
     fun login(name: String, password: String): User?
     fun hashPassword(password: String, salt: ByteArray): String
     fun ByteArray.toHexString(): String
-    fun generateUserId(): String
 }

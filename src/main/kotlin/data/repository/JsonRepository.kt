@@ -25,7 +25,6 @@ abstract class JsonRepository<T : Any> {
         }
     }
 
-    //как writeTextToFile
     fun saveToFile(data: List<T>, path: String) {
         val file = File(path)
         val jsonData = serialize(data)

@@ -14,7 +14,7 @@ class OrderProcessingServiceImpl : OrderProcessingService {
     }
 
     override fun viewOrder() {
-        println("Order is being viewed")
+
     }
 
     override fun viewMenu() {

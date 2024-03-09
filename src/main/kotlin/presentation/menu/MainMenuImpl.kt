@@ -1,21 +1,26 @@
 package presentation.menu
 
 import data.dao.MenuDao
+import data.dao.OrdersDao
+import data.dao.UserDao
 import domain.entity.Role
+import domain.service.InputValidator
 import domain.service.admin.AdminService
 import domain.service.auth.AuthService
+import domain.service.visitor.VisitorService
 import presentation.menu.admin.AdminAuthImpl
 import presentation.menu.visitor.VisitorAuthImpl
-import java.util.*
+import presentation.model.OutputModel
 
 class MainMenuImpl(
     private val authService: AuthService,
-    //private val userDao: UserDao,
+    private val userDao: UserDao,
     private val menuDao: MenuDao,
-    private val AdminService: AdminService,
-    //private val ordersDao: OrdersDao
+    private val adminService: AdminService,
+    private val visitorService: VisitorService,
+    private val ordersDao: OrdersDao,
+    private val inputValidator: InputValidator
 ) : MainMenu {
-    private val scanner = Scanner(System.`in`)
 
     override fun run() {
         val menu = ConsoleMenu()
@@ -23,36 +28,36 @@ class MainMenuImpl(
 
         do {
             menu.displayMenu()
-            choice = scanner.nextInt()
+            choice = inputValidator.readInt()
 
             when (choice) {
                 1 -> handleViewMenu()
                 2 -> handleVisitorAuth()
                 3 -> handleAdminAuth()
-                4 -> System.exit(0)
-                else -> println("Invalid choice. Please enter a number between 1 and 3.")
+                //4 -> exitProcess(0)
+                else -> println("Invalid choice. Please enter a number between 1 and 4.")
             }
-        } while (choice != 3)
+        } while (choice != 4)
     }
 
     override fun handleViewMenu() {
         val menuItems = menuDao.getAllItems()
         if (menuItems.isEmpty()) {
-            println("Menu is empty")
+            println(OutputModel("Menu is empty"))
             return
         }
         for (menuItem in menuItems) {
-            println(menuItem)
+            println(menuItem.toString())
         }
     }
 
     override fun handleVisitorAuth() {
-        val visitorAuth = VisitorAuthImpl()
+        val visitorAuth = VisitorAuthImpl(authService, userDao, visitorService, menuDao, ordersDao, inputValidator)
         visitorAuth.run()
 
     }
     override fun handleAdminAuth() {
-        val adminAuth = AdminAuthImpl(authService, AdminService, menuDao)
+        val adminAuth = AdminAuthImpl(authService,userDao, adminService, inputValidator)
         adminAuth.run()
     }
     override fun handleRegistration() {
@@ -60,16 +65,16 @@ class MainMenuImpl(
         while (role == null) {
             try {
                 println("Enter role (VISITOR or ADMIN):")
-                role = Role.valueOf(scanner.next().uppercase())
+                role = Role.valueOf(inputValidator.readString().uppercase())
             } catch (e: IllegalArgumentException) {
                 println("Invalid role name. Please enter VISITOR or ADMIN. (uppercase or lowercase)")
             }
         }
 
         println("Enter username:")
-        val username = scanner.next()
+        val username = inputValidator.readString()
         println("Enter password:")
-        val password = scanner.next()
+        val password = inputValidator.readString()
 
         val result = authService.register(username, password, role)
         if (result) {
@@ -81,9 +86,9 @@ class MainMenuImpl(
 
     override fun handleAuthentication() {
         println("Enter username:")
-        val username = scanner.next()
+        val username = inputValidator.readString()
         println("Enter password:")
-        val password = scanner.next()
+        val password = inputValidator.readString()
 
         val user = authService.login(username, password)
         if (user != null) {

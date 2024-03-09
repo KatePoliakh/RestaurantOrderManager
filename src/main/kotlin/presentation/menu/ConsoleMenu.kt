@@ -8,9 +8,4 @@ class ConsoleMenu {
         println("3. Enter as ADMIN")
         println("4. Exit")
     }
-
-    // println("1. Enter as ADMIN") -> ask for special password
-    // -> if correct, register or authenticate as admin
-    // println("2. Enter as VISITOR") -> register or authenticate as visitor
-    // println("3. Exit")
 }

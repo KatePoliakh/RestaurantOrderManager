@@ -4,5 +4,6 @@ enum class OrderStatus {
     ACCEPTED,
     IN_PROGRESS,
     COMPLETED,
-    CANCELLED
+    CANCELLED,
+    NOT_FOUND
 }

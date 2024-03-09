@@ -1,1 +1,1 @@
-
+[{"name":"Pasta","quantity":100,"price":5.0,"preparationTime":15,"id":"10fc7021-bd8b-4a82-9319-bdceb05da449"},{"name":"Karbonara","quantity":100,"price":8.0,"preparationTime":20,"id":"3c0cd436-2ed3-4ffb-a798-6154f8bdf378"},{"name":"Lasania","quantity":150,"price":6.0,"preparationTime":30,"id":"18e282ad-9990-4d85-8690-00c383eec91e"},{"name":"Wine","quantity":500,"price":10.0,"preparationTime":1,"id":"fdfc1a11-c7ab-40c4-b370-2d9a7501d33a"},{"name":"Pizza","quantity":300,"price":10.0,"preparationTime":40,"id":"19643248-f672-4574-867b-1c2ec157bcc1"}]

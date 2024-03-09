@@ -1,10 +1,8 @@
 package domain.entity
 
-import data.dao.MenuDao
+import kotlinx.serialization.Serializable
 
+@Serializable
 class SystemState {
-    var menu: MenuDao? = null
     var revenue: Double = 0.0
-    var users: List<String> = listOf()
-    // Add other necessary fields
 }
