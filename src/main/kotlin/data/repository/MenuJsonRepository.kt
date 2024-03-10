@@ -56,4 +56,28 @@ class MenuJsonRepository(private val menuJsonRepositoryPath: String) : JsonRepos
     }
 
 
+    override fun decreaseCountOfItems(items: List<MenuItem>): MenuDao.Result {
+        val menu = getAllItems()
+        val updatedMenu = menu.toMutableList()
+        for (item in items) {
+            val menuItem = updatedMenu.find { it.name == item.name } ?: return MenuDao.Error
+            if (menuItem.quantity < item.quantity) return MenuDao.Error
+            menuItem.quantity -= item.quantity
+        }
+        val serializedUpdatedStorage = Json.encodeToString(updatedMenu.toList())
+        writeTextToFile(menuJsonRepositoryPath, serializedUpdatedStorage)
+        return MenuDao.Success
+    }
+
+    override fun increaseCountOfItems(items: List<MenuItem>) {
+        val menu = getAllItems()
+        val updatedMenu = menu.toMutableList()
+        for (item in items) {
+            val menuItem = updatedMenu.find { it.name == item.name } ?: return
+            menuItem.quantity += item.quantity
+        }
+        val serializedUpdatedStorage = Json.encodeToString(updatedMenu.toList())
+        writeTextToFile(menuJsonRepositoryPath, serializedUpdatedStorage)
+    }
+
 }

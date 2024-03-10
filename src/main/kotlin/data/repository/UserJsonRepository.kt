@@ -4,9 +4,11 @@ package data.repository
 
 //import kotlinx.serialization.json.Json
 import data.dao.UserDao
+import domain.entity.CurrentUser
 import domain.entity.User
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.util.*
 
 class UserJsonRepository(private val userJsonRepositoryPath: String) : JsonRepository<User>(), UserDao {
 
@@ -35,15 +37,26 @@ class UserJsonRepository(private val userJsonRepositoryPath: String) : JsonRepos
             listOf() else Json.decodeFromString<List<User>>(textFromFile)
     }
 
-   /* override fun updateUser(username: String, password: String, role: String): Boolean {
-        val users = loadFromFile(userJsonRepositoryPath).toMutableList()
-        val user = users.find { it.name == username }
-        if (user != null) {
-            user.password = password
-            user.role = role
-            saveToFile(users, userJsonRepositoryPath)
-            return true
-        }
-        return false
-    }*/
+    override fun setCurrentUser(login: String, id: UUID, hashPass: String, salt: ByteArray) {
+        CurrentUser.id = id
+        CurrentUser.name = login
+        CurrentUser.password = hashPass
+        CurrentUser.salt = salt
+    }
+
+    override fun getCurrentUser(): CurrentUser {
+        return CurrentUser
+    }
+
+    /* override fun updateUser(username: String, password: String, role: String): Boolean {
+         val users = loadFromFile(userJsonRepositoryPath).toMutableList()
+         val user = users.find { it.name == username }
+         if (user != null) {
+             user.password = password
+             user.role = role
+             saveToFile(users, userJsonRepositoryPath)
+             return true
+         }
+         return false
+     }*/
 }

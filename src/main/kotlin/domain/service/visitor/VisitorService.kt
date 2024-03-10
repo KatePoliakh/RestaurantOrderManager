@@ -1,16 +1,19 @@
 package domain.service.visitor
 
+import domain.entity.MenuItem
 import domain.entity.Order
 import domain.entity.OrderStatus
+import java.util.*
 
 interface VisitorService {
     fun viewMenu()
-    fun placeOrder(order: Order)
-    //fun viewOrderById(orderId: Int) : Order? // мб убрать
-    //fun cancelOrder(orderId: Int)
-    fun payOrder(orderId: Int)
-    fun viewOrderStatus(orderId: Int) : OrderStatus
-    fun leaveReview(orderId: Int, mark: Int, review: String)
-    fun addItemToOrder(orderId: Int, menuItem: String)
-    fun generateOrderId(): Int
+    fun placeOrder(userId: UUID, order: Order)
+    fun cancelOrder(orderId: Int)
+    fun payOrder(orderId: UUID)
+    fun viewOrderStatus(orderId: UUID) : OrderStatus
+    fun leaveReview(orderId: UUID, mark: Int, review: String)
+    fun addItemToOrder(orderId: UUID, menuItem: String)
+    //fun generateOrderNum(): Int
+    fun getOrderItems(orderId: UUID): List<MenuItem>
+
 }

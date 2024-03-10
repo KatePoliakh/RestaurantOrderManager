@@ -6,6 +6,7 @@ import data.dao.UserDao
 import domain.entity.Role
 import domain.service.InputValidator
 import domain.service.auth.AuthService
+import domain.service.order.OrderProcessingService
 import domain.service.visitor.VisitorService
 import presentation.model.OutputModel
 import presentation.model.OutputStatus
@@ -16,7 +17,8 @@ class VisitorAuthImpl(
     private val visitorService: VisitorService,
     private val menuDao: MenuDao,
     private val ordersDao: OrdersDao,
-    private val inputValidator: InputValidator
+    private val inputValidator: InputValidator,
+    private val orderProcessingService: OrderProcessingService
 ) : VisitorAuth {
 
     override fun run() {
@@ -28,7 +30,7 @@ class VisitorAuthImpl(
                 1 -> handleVisitorRegistration()
                 2 -> handleVisitorAuthentication()
                 3 -> return
-                //4 -> System.exit(0)
+                4 -> System.exit(0)
                 else -> println("Invalid choice. Please enter a number between 1 and 4.")
             }
         } while (choice != 4)
@@ -77,7 +79,8 @@ class VisitorAuthImpl(
                 println("Authentication error: ${checkResult.message}")
             } else {
                 println("Authentication successful!")
-                val visitorMenu = VisitorMenuImpl(menuDao, visitorService, ordersDao, inputValidator)
+                usersDao.setCurrentUser(user.name, user.userId, user.password, user.salt)
+                val visitorMenu = VisitorMenuImpl(menuDao, visitorService, ordersDao, inputValidator, usersDao, orderProcessingService)
                 visitorMenu.run()
             }
         } else {

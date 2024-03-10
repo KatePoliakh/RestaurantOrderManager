@@ -8,4 +8,6 @@ interface AdminService {
     fun removeItem(menuItem: MenuItem)
     fun updateItem(menuItem: MenuItem)
 
+    fun getRevenue(): Double
+    fun getStatistics(): String
 }

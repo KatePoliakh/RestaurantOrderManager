@@ -1,7 +1,7 @@
 package presentation.menu.visitor
 
 interface VisitorViewMenu {
-        fun run()
+         fun run()
         fun handleViewMenu()
         fun handlePlaceOrder()
         fun handleCancelOrder()

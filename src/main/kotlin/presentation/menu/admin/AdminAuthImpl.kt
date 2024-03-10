@@ -1,5 +1,8 @@
 package presentation.menu.admin
 
+import data.dao.MenuDao
+import data.dao.OrdersDao
+import data.dao.SystemStateDao
 import data.dao.UserDao
 import domain.entity.Role
 import domain.service.InputValidator
@@ -12,8 +15,10 @@ class AdminAuthImpl(
     private val authService: AuthService,
     private val userDao: UserDao,
     private val adminService: AdminService,
-    //private val menuDao: MenuDao,
-    private val inputValidator: InputValidator
+    private val menuDao: MenuDao,
+    private val inputValidator: InputValidator,
+    private val systemStateDao: SystemStateDao,
+    private val ordersDao: OrdersDao
 ) : AdminAuth {
     private val adminPassword = "admin123" // Replace with your actual admin password
     override fun run() {
@@ -97,7 +102,7 @@ class AdminAuthImpl(
                 println("Authentication error: ${checkResult.message}")
             } else {
                 println("Authentication successful!")
-                val adminMenu = AdminViewMenuImpl(adminService, inputValidator)
+                val adminMenu = AdminViewMenuImpl(adminService, menuDao, inputValidator, systemStateDao, ordersDao)
                 adminMenu.run()
             }
         } else {

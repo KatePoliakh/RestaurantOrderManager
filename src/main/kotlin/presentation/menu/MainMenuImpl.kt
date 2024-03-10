@@ -2,15 +2,18 @@ package presentation.menu
 
 import data.dao.MenuDao
 import data.dao.OrdersDao
+import data.dao.SystemStateDao
 import data.dao.UserDao
 import domain.entity.Role
 import domain.service.InputValidator
 import domain.service.admin.AdminService
 import domain.service.auth.AuthService
+import domain.service.order.OrderProcessingService
 import domain.service.visitor.VisitorService
 import presentation.menu.admin.AdminAuthImpl
 import presentation.menu.visitor.VisitorAuthImpl
 import presentation.model.OutputModel
+import kotlin.system.exitProcess
 
 class MainMenuImpl(
     private val authService: AuthService,
@@ -19,7 +22,9 @@ class MainMenuImpl(
     private val adminService: AdminService,
     private val visitorService: VisitorService,
     private val ordersDao: OrdersDao,
-    private val inputValidator: InputValidator
+    private val inputValidator: InputValidator,
+    private val orderProcessingService: OrderProcessingService,
+    private val systemStateDao: SystemStateDao
 ) : MainMenu {
 
     override fun run() {
@@ -34,7 +39,7 @@ class MainMenuImpl(
                 1 -> handleViewMenu()
                 2 -> handleVisitorAuth()
                 3 -> handleAdminAuth()
-                //4 -> exitProcess(0)
+                4 -> exitProcess(0)
                 else -> println("Invalid choice. Please enter a number between 1 and 4.")
             }
         } while (choice != 4)
@@ -52,12 +57,12 @@ class MainMenuImpl(
     }
 
     override fun handleVisitorAuth() {
-        val visitorAuth = VisitorAuthImpl(authService, userDao, visitorService, menuDao, ordersDao, inputValidator)
+        val visitorAuth = VisitorAuthImpl(authService, userDao, visitorService, menuDao, ordersDao, inputValidator, orderProcessingService)
         visitorAuth.run()
 
     }
     override fun handleAdminAuth() {
-        val adminAuth = AdminAuthImpl(authService,userDao, adminService, inputValidator)
+        val adminAuth = AdminAuthImpl(authService,userDao, adminService, menuDao, inputValidator, systemStateDao, ordersDao)
         adminAuth.run()
     }
     override fun handleRegistration() {
